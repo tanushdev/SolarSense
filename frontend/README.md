@@ -1,32 +1,33 @@
-# React + TypeScript + Vite
+# SolarSense-AI Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+This is the frontend dashboard for the SolarSense-AI space-weather operational intelligence engine. It visualizes solar flare nowcasts and forecasts using Soft X-ray and Hard X-ray time-series data from ISRO Aditya-L1 instruments (SoLEXS and HEL1OS).
 
-Currently, two official plugins are available:
+## Key Pages
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+1. Live Monitoring: Real-time flux line charts, active probabilities, warning alerts, and physics-grounded rationales.
+2. Historical Analytics: Query system predictions and check the database validation report.
+3. Model Performance: Evaluation metrics (True Skill Statistic, Heidke Skill Score, False Alarm Ratio) for the trained ensemble.
+4. Diagnostics: Real-time telemetry, missing value counts, and database statistics.
 
-## React Compiler
+## Project Structure
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* src/components: UI widgets, layout utilities, and chart components.
+* src/pages: Dashboard sub-pages.
+* src/services: API integration layer.
+* src/hooks: Custom React state hooks.
 
-## Expanding the Oxlint configuration
+## Prerequisites
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+* Node.js (version 18 or above recommended)
+* npm (package manager)
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
+## Setup and Running
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+1. Install dependencies:
+   npm install
+
+2. Run the local development server:
+   npm run dev
+
+3. Build the production application:
+   npm run build
