@@ -1,0 +1,44 @@
+solexs:
+  raw_dir: "dataset/raw/solexs"
+  level: "L1"
+  cadence_seconds: 1          # SoLEXS native cadence
+  resample_seconds: 5         # Resample to 5s for alignment
+  energy_bands:
+    soft_low_kev: 1.6
+    soft_high_kev: 12.0
+  columns:
+    time: "TIME"
+    flux: "FLUX"
+    counts: "COUNTS"
+    energy: "ENERGY"
+  fits_extension: 1           # FITS HDU extension index
+
+hel1os:
+  raw_dir: "dataset/raw/hel1os"
+  level: "L1"
+  cadence_seconds: 1
+  resample_seconds: 5
+  energy_bands:
+    hard_low_kev: 10.0
+    hard_high_kev: 150.0
+  columns:
+    time: "TIME"
+    flux: "FLUX"
+    counts: "COUNTS"
+  fits_extension: 1
+
+alignment:
+  method: "linear_interpolation"   # or "nearest"
+  max_gap_seconds: 30              # Flag gaps larger than this
+  reference_instrument: "solexs"  # HEL1OS resampled to SoLEXS grid
+
+storage:
+  processed_dir: "dataset/processed"
+  catalog_dir: "dataset/catalogs"
+  format: "parquet"
+  compression: "snappy"
+
+goes:
+  xrs_dir: "dataset/external/goes_xrs"
+  use_for_validation: true
+  catalog_url: "https://www.ngdc.noaa.gov/stp/space-weather/solar-data/solar-features/solar-flares/x-rays/goes/xrs/"

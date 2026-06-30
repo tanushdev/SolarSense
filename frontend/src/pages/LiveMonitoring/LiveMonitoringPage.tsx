@@ -1,4 +1,4 @@
-import { useLightCurve, useForecast, useNoaa } from "@/hooks/useApi"
+import { useForecast, useNoaa, useLightCurveLive } from "@/hooks/useApi"
 import { MetricCard } from "@/components/domain/MetricCard"
 import { NOAAStatus } from "@/components/domain/NOAAStatus"
 import { LightCurveChart } from "@/components/charts/LightCurveChart"
@@ -6,9 +6,18 @@ import { Card, CardContent } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 
 export default function LiveMonitoringPage() {
-  const { data: lightcurve } = useLightCurve(2)
+  const { data: live } = useLightCurveLive()
   const { data: forecast } = useForecast()
   const { data: noaa } = useNoaa()
+  const lightcurve = live?.points?.filter(p => p.soft_flux != null).map(p => ({
+    timestamp: p.timestamp, soft_flux: p.soft_flux!, hard_flux: p.hard_flux
+  }))
+  const forecastPoints = live?.points?.filter(p => p.probability != null).map(p => ({
+    timestamp: p.timestamp,
+    probability: p.probability!,
+    soft_flux: p.forecast_soft,
+    hard_flux: p.forecast_hard,
+  }))
 
   return (
     <div className="space-y-8 animate-slide-up">
@@ -25,15 +34,15 @@ export default function LiveMonitoringPage() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <MetricCard label="FLUX (SOFT)" value={lightcurve?.length ? lightcurve[lightcurve.length - 1].soft_flux.toFixed(2) : "—"} />
-        <MetricCard label="FLUX (HARD)" value={lightcurve?.length ? lightcurve[lightcurve.length - 1].hard_flux.toFixed(2) : "—"} />
+        <MetricCard label="FLUX (SOFT)" value={lightcurve?.length ? (lightcurve[lightcurve.length - 1].soft_flux?.toExponential(2) ?? "—") : "—"} />
+        <MetricCard label="FLUX (HARD)" value={lightcurve?.length ? (lightcurve[lightcurve.length - 1].hard_flux?.toExponential(2) ?? "—") : "—"} />
         <MetricCard label="FLARE PROB" value={forecast ? `${(forecast.flare_probability * 100).toFixed(0)}%` : "—"} />
         <MetricCard label="LEAD TIME" value={forecast ? `${forecast.lead_time_minutes.toFixed(0)}` : "—"} unit="min" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <LightCurveChart data={lightcurve} />
+          <LightCurveChart data={lightcurve} forecast={forecastPoints} probability={forecast?.flare_probability} />
         </div>
         <div className="space-y-6">
           <NOAAStatus data={noaa} isLoading={!noaa} />

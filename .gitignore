@@ -1,0 +1,44 @@
+# Dependency directories
+node_modules/
+.vite/
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+
+# Local environments
+.venv/
+env/
+venv/
+
+# Caches and logs
+.pytest_cache/
+lightning_logs/
+mlruns/
+mlflow.db
+.gradle/
+.project
+
+# Local GOES/NOAA data cache files
+*.json
+!models/checkpoints/**/*.json
+xrays-6-hour.json
+xray-flares-latest.json
+suvi-flares-latest.json
+predictions.db
+predictions.csv
+
+# Large model binaries and datasets
+dataset/
+models/checkpoints/random_forest/
+models/checkpoints/lstm_benchmark/best-v*.ckpt
+models/checkpoints/lstm_test/
+models/checkpoints/patchtst_benchmark/
+models/checkpoints/timesnet_benchmark/
+
+# Temporary and debug scripts
+_debug_pipeline.py
+test_sandbox.txt
+scratch/
+hel1os_2026Jun27T143817137.sh
+download_hel1os.py
+*.png

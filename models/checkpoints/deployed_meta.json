@@ -1,0 +1,4 @@
+{
+  "deployed_model": "XGB",
+  "model_path": "models/checkpoints/xgboost"
+}

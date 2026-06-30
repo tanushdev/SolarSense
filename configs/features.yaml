@@ -1,0 +1,49 @@
+windows:
+  short_minutes: 5
+  medium_minutes: 15
+  long_minutes: 60
+  forecast_lookback_minutes: 120
+
+physics:
+  hardness_ratio:
+    enabled: true
+    epsilon: 1e-10              # Avoid division by zero
+  flux_derivative:
+    enabled: true
+    order: [1, 2]               # First and second derivatives
+    smoothing_window: 5         # Apply before differencing
+  spectral_index:
+    enabled: true
+  rise_rate:
+    enabled: true
+    window_minutes: 5
+  decay_rate:
+    enabled: true
+    window_minutes: 10
+  cross_correlation:
+    enabled: true
+    max_lag_seconds: 120
+  background_subtraction:
+    enabled: true
+    percentile: 10              # Use 10th percentile as background
+    window_minutes: 60
+
+spectral:
+  fft:
+    enabled: true
+    top_k_frequencies: 10
+  wavelet:
+    enabled: true
+    wavelet_name: "db4"
+    levels: 5
+    decompose_into: ["trend", "seasonality", "residual"]
+
+matrix_profile:
+  enabled: true
+  window_sizes: [30, 60, 120]   # In samples at 5s cadence = 2.5, 5, 10 min
+  n_motifs: 5
+  n_discords: 5
+
+normalization:
+  method: "robust_scaler"       # RobustScaler handles outliers better than StandardScaler
+  fit_on: "training_set_only"

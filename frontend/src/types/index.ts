@@ -44,20 +44,36 @@ export interface NowcastEvent {
 export interface LightCurvePoint {
   timestamp: string
   soft_flux: number
-  hard_flux: number
+  hard_flux: number | null
 }
 
-export interface ModelMetrics {
-  tss: number
-  hss: number
-  brier: number
-  auc: number
-  ece: number
-  avg_lead_time: number
-  false_alarm_rate: number
-  precision: number
-  recall: number
-  f1: number
+export interface ForecastPoint {
+  timestamp: string
+  probability: number
+  soft_flux?: number | null
+  hard_flux?: number | null
+}
+
+export interface ForecastTimeseries {
+  forecast_hours: number
+  current_probability: number
+  points: ForecastPoint[]
+}
+
+export interface LiveLightCurvePoint {
+  timestamp: string
+  soft_flux: number | null
+  hard_flux: number | null
+  probability: number | null
+  forecast_soft?: number | null
+  forecast_hard?: number | null
+}
+
+export interface LiveLightCurveResponse {
+  status: string
+  source: string
+  current_probability: number
+  points: LiveLightCurvePoint[]
 }
 
 export interface PerformanceMetrics {
@@ -80,13 +96,27 @@ export interface SystemStatus {
   uptime_hours: number
 }
 
-export interface MetricsResponse extends ModelMetrics {
+export interface MetricsResponse {
+  tss: number
+  hss: number
+  brier: number
   roc_auc: number
+  pr_auc: number
+  ece: number
+  avg_lead_time: number
+  false_alarm_rate: number
+  precision: number
+  recall: number
+  f1: number
   accuracy: number
   model: string
+  threshold: number
+  dataset_version: string
   total_predictions: number
   correct_predictions: number
-  prediction_accuracy: number
+  prediction_accuracy: number | null
+  pending_validation: number
+  validated_predictions: number
 }
 
 export interface ModelsResponse {

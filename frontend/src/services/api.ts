@@ -7,7 +7,10 @@ import type {
   MetricsResponse,
   ModelsResponse,
   AlertsResponse,
-  NoaaData, DatasetsResponse,
+  NoaaData,
+  DatasetsResponse,
+  ForecastTimeseries,
+  LiveLightCurveResponse,
 } from '@/types'
 
 const BASE_URL = '/api'
@@ -60,4 +63,10 @@ export const api = {
 
   datasets: () =>
     fetchJson<DatasetsResponse>('/datasets'),
+
+  forecastTimeseries: (hours = 72) =>
+    fetchJson<ForecastTimeseries>(`/forecast/timeseries?hours=${hours}`),
+
+  lightcurveLive: () =>
+    fetchJson<LiveLightCurveResponse>('/lightcurve/live'),
 }

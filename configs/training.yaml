@@ -1,0 +1,44 @@
+general:
+  seed: 42
+  device: "auto"                  # auto / cpu / cuda
+  experiment_root: "experiments"
+  checkpoint_root: "models/checkpoints"
+
+data:
+  processed_dir: "dataset/processed"
+  catalog_path: "dataset/catalogs/nowcast_catalog.csv"
+  file_suffix: "_60s"            # "_60s" for 60s cadence, "" for 5s cadence
+  lookback_minutes: 120
+  lookback_samples: 120          # 120 min * 1 sample/min (60s cadence)
+  forecast_horizons_minutes: [5, 10, 15, 30, 60]
+  split_ratios: [0.60, 0.20, 0.20]  # train / val / test
+  window_step: 5                 # 1 sample every 5 min (more windows for DL training)
+  label_mode: "fixed_window"      # peak_only | fixed_window
+
+training:
+  batch_size: 64
+  max_epochs: 150
+  early_stopping_patience: 15
+  gradient_clip_val: 1.0
+  optimizer: "adamw"
+  learning_rate: 0.001
+  weight_decay: 0.01
+  scheduler: "cosine_annealing"
+  warmup_epochs: 10
+  class_weight_ratio: 10.0        # flare : non-flare weight
+
+loss:
+  primary: "focal"
+  focal_alpha: 0.75
+  focal_gamma: 2.0
+  lead_time_tau: 300              # seconds penalty decay
+
+logging:
+  mlflow_enabled: false
+  log_every_n_steps: 50
+  metrics:
+    - "tss"
+    - "hss"
+    - "brier"
+    - "lead_time"
+    - "ece"

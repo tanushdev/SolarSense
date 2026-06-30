@@ -1,0 +1,84 @@
+nowcaster:
+  threshold_detector:
+    enabled: true
+    soft_xray_threshold_multiplier: 2.0   # sigma above background (reduced for raw counts)
+    hard_xray_threshold_multiplier: 2.0   # sigma above background
+    min_duration_seconds: 30              # shorter min duration for raw counts
+    confirmation_samples: 2               # fewer confirmations needed
+    flare_classes:
+      A: 0.00000001
+      B: 0.0000001
+      C: 0.000001
+      M: 0.00001
+      X: 0.0001
+
+  cnn_nowcaster:
+    enabled: true
+    input_window_samples: 60              # 60 * 5s = 5 minutes
+    channels: [32, 64, 128]
+    kernel_sizes: [5, 3, 3]
+    dropout: 0.3
+    batch_size: 64
+    learning_rate: 0.001
+    epochs: 100
+    early_stopping_patience: 10
+
+forecaster:
+  lookback_minutes: 120
+  lookback_samples: 1440                  # 120 min * 12 samples/min (5s cadence)
+  forecast_horizons_minutes: [5, 10, 15, 30, 60]
+
+  patchtst:
+    enabled: true
+    patch_len: 16
+    stride: 8
+    d_model: 128
+    n_heads: 8
+    n_layers: 3
+    d_ff: 256
+    dropout: 0.2
+    batch_size: 32
+    learning_rate: 0.0005
+    epochs: 150
+    scheduler: "cosine_annealing"
+    warmup_epochs: 10
+
+  timesnet:
+    enabled: true
+    d_model: 64
+    d_ff: 128
+    top_k: 5                    # Top-k frequencies for 2D transform
+    num_kernels: 6
+    dropout: 0.1
+    batch_size: 32
+    learning_rate: 0.001
+    epochs: 100
+
+  lstm:
+    enabled: true
+    hidden_size: 64
+    num_layers: 1
+    bidirectional: false
+    dropout: 0.2
+    batch_size: 128
+    learning_rate: 0.001
+    epochs: 100
+
+  bayesian:
+    method: "mc_dropout"
+    n_forward_passes: 50                    # MC Dropout samples
+    conformal_alpha: 0.1                    # 90% coverage conformal intervals
+
+survival:
+  model: "neural_cox"                     # Neural Cox PH model
+  hidden_layers: [128, 64, 32]
+  dropout: 0.2
+  batch_size: 64
+  learning_rate: 1e-3
+  epochs: 100
+
+memory:
+  faiss_index_type: "Flat"               # or "IVFFlat" for large datasets
+  embedding_dim: 128
+  top_k_similar: 5
+  similarity_metric: "cosine"

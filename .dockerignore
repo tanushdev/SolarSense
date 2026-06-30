@@ -1,0 +1,11 @@
+__pycache__
+*.pyc
+.git
+.vscode
+node_modules
+.venv
+dataset/raw
+dataset/processed/*.parquet
+experiments
+models/checkpoints
+*.md

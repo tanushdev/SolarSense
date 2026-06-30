@@ -45,7 +45,7 @@ export default function ModelPerformancePage() {
             <SectionHeader label="SKILL SCORES" />
             <MetricRow label="TSS (True Skill Statistic)" value={metrics.tss.toFixed(4)} />
             <MetricRow label="HSS (Heidke Skill Score)" value={metrics.hss.toFixed(4)} />
-            <MetricRow label="ROC-AUC" value={metrics.auc.toFixed(4)} />
+            <MetricRow label="ROC-AUC" value={metrics.roc_auc.toFixed(4)} />
             <MetricRow label="F1 Score" value={metrics.f1.toFixed(4)} />
           </Card>
 

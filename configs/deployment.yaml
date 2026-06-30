@@ -1,0 +1,42 @@
+deployment:
+  api:
+    host: "0.0.0.0"
+    port: 8000
+    workers: 4
+    max_requests: 1000
+    request_timeout_seconds: 60
+    cors_origins: ["*"]
+
+  frontend:
+    host: "0.0.0.0"
+    port: 5173
+    refresh_interval_seconds: 5
+
+  model:
+    device: "cpu"
+    winner: "XGB"                    # Selected via benchmark (TSS=0.59, AUC=0.95)
+    fallback_model: "threshold"
+    batch_size: 32
+    mc_dropout_passes: 50
+    conformal_alpha: 0.1
+
+  memory_bank:
+    index_path: "models/memory/faiss_index.bin"
+    metadata_path: "models/memory/event_metadata.pkl"
+    top_k: 5
+
+  alerts:
+    probability_threshold: 0.5
+    high_confidence: 0.8
+    false_alarm_budget_per_day: 2
+    minimum_lead_time_minutes: 5
+
+  monitoring:
+    prometheus_enabled: true
+    metrics_port: 9090
+    health_check_interval: 30
+
+  docker:
+    image: "solarsense-ai:latest"
+    cpu_limit: "4"
+    memory_limit: "8G"

@@ -1,0 +1,24 @@
+flare_classification:
+  GOES_A: 1.0e-8    # W/m² in 1-8 Angstrom band
+  GOES_B: 1.0e-7
+  GOES_C: 1.0e-6
+  GOES_M: 1.0e-5
+  GOES_X: 1.0e-4
+
+  # Raw COUNTS-based thresholds for when physical W/m² calibration is unavailable
+  # Derived from hard_flux distribution percentiles:
+  #   P25=33.6, P50=58.5, P75=80.5  (catalog peak values)
+  counts_A: 10       # Background to small deviation
+  counts_B: 35       # Minor events
+  counts_C: 60       # Moderate events
+  counts_M: 90       # Strong events
+  counts_X: 1000000000.0  # Extreme events (effectively no upper bound)
+
+alert:
+  probability_threshold: 0.5
+  high_confidence_threshold: 0.8
+  uncertainty_max_acceptable: 0.15       # Suppress alert if uncertainty too high
+
+operational:
+  false_alarm_budget_per_day: 2          # Target: at most 2 false alarms/day
+  minimum_lead_time_minutes: 5           # Don't alert unless lead time >= 5 min

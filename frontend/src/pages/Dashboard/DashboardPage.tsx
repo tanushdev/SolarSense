@@ -1,4 +1,4 @@
-import { useHealth, useForecast, useLightCurve, useNoaa, useMetrics } from "@/hooks/useApi"
+import { useHealth, useForecast, useNoaa, useMetrics, useLightCurveLive } from "@/hooks/useApi"
 import { MetricCard } from "@/components/domain/MetricCard"
 import { AlertBanner } from "@/components/domain/AlertBanner"
 import { PredictionCard } from "@/components/domain/PredictionCard"
@@ -10,9 +10,18 @@ import { cn } from "@/lib/utils"
 export default function DashboardPage() {
   const { data: health } = useHealth()
   const { data: forecast } = useForecast()
-  const { data: lightcurve } = useLightCurve(2)
+  const { data: live } = useLightCurveLive()
   const { data: noaa } = useNoaa()
   const { data: metrics } = useMetrics()
+  const lightcurve = live?.points?.filter(p => p.soft_flux != null).map(p => ({
+    timestamp: p.timestamp, soft_flux: p.soft_flux!, hard_flux: p.hard_flux
+  }))
+  const forecastPoints = live?.points?.filter(p => p.probability != null).map(p => ({
+    timestamp: p.timestamp,
+    probability: p.probability!,
+    soft_flux: p.forecast_soft,
+    hard_flux: p.forecast_hard,
+  }))
 
   return (
     <div className="space-y-8 animate-slide-up">
@@ -50,7 +59,7 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <LightCurveChart data={lightcurve} />
+          <LightCurveChart data={lightcurve} forecast={forecastPoints} probability={forecast?.flare_probability} />
         </div>
         <div className="space-y-6">
           {forecast && <PredictionCard forecast={forecast} />}

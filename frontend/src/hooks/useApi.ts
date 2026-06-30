@@ -50,7 +50,7 @@ export function useValidation(start?: string, end?: string) {
   return useQuery({
     queryKey: ['validation', start, end],
     queryFn: async (): Promise<ValidationReport> => {
-      const res = await fetch(`/validation/report?start_date=${start ?? '2024-07-01'}&end_date=${end ?? '2024-12-31'}`)
+      const res = await fetch(`/api/validation/report?start_date=${start ?? '2024-07-01'}&end_date=${end ?? '2024-12-31'}`)
       if (!res.ok) throw new Error('Validation API failed')
       return res.json()
     },
@@ -94,6 +94,22 @@ export function useMetrics() {
   return useQuery<MetricsResponse>({
     queryKey: ['metrics'],
     queryFn: api.metrics,
+    refetchInterval: 60_000,
+  })
+}
+
+export function useForecastTimeseries(hours = 72) {
+  return useQuery({
+    queryKey: ['forecast-timeseries', hours],
+    queryFn: () => api.forecastTimeseries(hours),
+    refetchInterval: 300_000,
+  })
+}
+
+export function useLightCurveLive() {
+  return useQuery({
+    queryKey: ['lightcurve-live'],
+    queryFn: api.lightcurveLive,
     refetchInterval: 60_000,
   })
 }
