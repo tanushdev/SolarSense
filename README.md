@@ -1,10 +1,10 @@
-# SolarSense-AI ☀️🛰️
+# SolarSense-AI
 
 SolarSense-AI is a real-time space weather intelligence platform that fetches live telemetry from the **NOAA GOES-19 satellite**, processes raw soft and hard X-ray flux readings, and executes deep learning/gradient-boosted forecasts to predict solar flare occurrences and precursor heating phases.
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
 * **Real-Time GOES-19 Telemetry**: Automatically polls and co-aligns NOAA satellite flux measurements every 30 seconds.
 * **XGBoost Prediction Core**: Fully trained classifier utilizing wavelets, rolling correlation, and Neupert effect signal proxies to predict flares with a **TSS of 0.68** and **ROC-AUC of 0.91**.
@@ -17,7 +17,7 @@ SolarSense-AI is a real-time space weather intelligence platform that fetches li
 
 ---
 
-## 🛠️ Installation & Setup
+## Installation & Setup
 
 ### 1. Prerequisites
 Ensure you have **Python 3.10+** and **Node.js 18+** installed.
@@ -50,7 +50,7 @@ npm run dev
 
 ---
 
-## 📊 Training & Evaluation
+## Training & Evaluation
 
 * **Run Unit Tests**: Ensure everything is fully operational by executing the test suite:
   ```bash
@@ -67,7 +67,7 @@ npm run dev
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 ```
 ├── backend/
 │   ├── api/             # FastAPI router endpoints & main.py
